@@ -8,23 +8,39 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      weatherDataInfo: {}
+      weatherDataInfo: {},
+      showWeatherData: false
     }
   }
 
   getWeatherInfo = async () => {
     // https://class07-local-server.herokuapp.com/getWeather?cityName=amman
-    let URL = `http://localhost:3001//getWeather?cityName=amman`;
+    let URL = `http://localhost:3001/getWeather?cityName=amman`;
     let weatherData = await axios.get(URL)
+    
     this.setState({
-      weatherDataInfo: weatherData.data
+      weatherDataInfo: weatherData.data,
+      showWeatherData: true
     })
+    console.log(this.state.weatherDataInfo)
   }
 
   render() {
     return (
       <div>
         <button onClick={this.getWeatherInfo} className="button">Get Weather Info</button>
+
+        {
+          this.state.showWeatherData &&
+          this.state.weatherDataInfo.map(element =>{
+            return (
+              <div>
+                <p>{element.data}</p>
+                <p>{element.description}</p>
+              </div>
+            )
+          })
+        }
         {/* <p>{this.state.weatherDataInfo}</p> */}
 
 
